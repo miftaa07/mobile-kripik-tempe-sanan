@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../bantu_memilih/bantu_memilih_screen.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/product_card.dart';
 import '../../widgets/hampers_card.dart';
@@ -19,9 +20,7 @@ class HomeScreen extends StatelessWidget {
           // =========================
           SliverPadding(
             padding: const EdgeInsets.fromLTRB(21, 18, 21, 0),
-            sliver: SliverToBoxAdapter(
-              child: _buildHeader(),
-            ),
+            sliver: SliverToBoxAdapter(child: _buildHeader()),
           ),
 
           // =========================
@@ -29,9 +28,7 @@ class HomeScreen extends StatelessWidget {
           // =========================
           SliverPadding(
             padding: const EdgeInsets.fromLTRB(21, 14, 21, 0),
-            sliver: SliverToBoxAdapter(
-              child: _buildSearch(),
-            ),
+            sliver: SliverToBoxAdapter(child: _buildSearch()),
           ),
 
           // =========================
@@ -39,9 +36,7 @@ class HomeScreen extends StatelessWidget {
           // =========================
           SliverPadding(
             padding: const EdgeInsets.fromLTRB(21, 22, 21, 0),
-            sliver: SliverToBoxAdapter(
-              child: _buildAiCard(),
-            ),
+            sliver: SliverToBoxAdapter(child: _buildAiCard(context)),
           ),
 
           // =========================
@@ -50,10 +45,7 @@ class HomeScreen extends StatelessWidget {
           SliverPadding(
             padding: const EdgeInsets.fromLTRB(21, 17, 0, 0),
             sliver: SliverToBoxAdapter(
-              child: _buildSectionHeader(
-                title: 'Produk Terbaru',
-                onTap: () {},
-              ),
+              child: _buildSectionHeader(title: 'Produk Terbaru', onTap: () {}),
             ),
           ),
 
@@ -64,8 +56,7 @@ class HomeScreen extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(21, 13, 21, 0),
                 scrollDirection: Axis.horizontal,
                 itemCount: 3,
-                separatorBuilder: (_, __) =>
-                    const SizedBox(width: 10),
+                separatorBuilder: (_, __) => const SizedBox(width: 10),
                 itemBuilder: (context, index) {
                   final products = [
                     {
@@ -108,10 +99,7 @@ class HomeScreen extends StatelessWidget {
           SliverPadding(
             padding: const EdgeInsets.fromLTRB(21, 17, 0, 0),
             sliver: SliverToBoxAdapter(
-              child: _buildSectionHeader(
-                title: 'Paket Hampers',
-                onTap: () {},
-              ),
+              child: _buildSectionHeader(title: 'Paket Hampers', onTap: () {}),
             ),
           ),
 
@@ -122,8 +110,7 @@ class HomeScreen extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(21, 13, 21, 0),
                 scrollDirection: Axis.horizontal,
                 itemCount: 2,
-                separatorBuilder: (_, __) =>
-                    const SizedBox(width: 12),
+                separatorBuilder: (_, __) => const SizedBox(width: 12),
                 itemBuilder: (context, index) {
                   final hampers = [
                     {
@@ -174,15 +161,13 @@ class HomeScreen extends StatelessWidget {
                 padding: const EdgeInsets.fromLTRB(21, 13, 21, 0),
                 scrollDirection: Axis.horizontal,
                 itemCount: 2,
-                separatorBuilder: (_, __) =>
-                    const SizedBox(width: 12),
+                separatorBuilder: (_, __) => const SizedBox(width: 12),
                 itemBuilder: (context, index) {
                   final stores = [
                     {
                       'name': 'Toko Sanan Jaya',
                       'address': 'Jl. Sanan No. 12, Malang',
-                      'description':
-                          'Toko legendaris dengan berbagai varian keripik tempe.',
+                      'description': 'Toko legendaris dengan berbagai varian keripik tempe.',
                     },
                     {
                       'name': 'Toko Ar - Ridlo',
@@ -210,9 +195,7 @@ class HomeScreen extends StatelessWidget {
           // =========================
           SliverPadding(
             padding: const EdgeInsets.fromLTRB(21, 18, 21, 20),
-            sliver: SliverToBoxAdapter(
-              child: _buildKnowledgeCard(),
-            ),
+            sliver: SliverToBoxAdapter(child: _buildKnowledgeCard()),
           ),
         ],
       ),
@@ -231,10 +214,7 @@ class HomeScreen extends StatelessWidget {
           width: 36,
           height: 36,
           decoration: BoxDecoration(
-            border: Border.all(
-              color: AppTheme.primary,
-              width: 1.5,
-            ),
+            border: Border.all(color: AppTheme.primary, width: 1.5),
             shape: BoxShape.circle,
           ),
           child: const Icon(
@@ -308,9 +288,7 @@ class HomeScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(
-          color: const Color(0xFFE5DDD6),
-        ),
+        border: Border.all(color: const Color(0xFFE5DDD6)),
         boxShadow: const [
           BoxShadow(
             color: Color(0x0D000000),
@@ -322,20 +300,10 @@ class HomeScreen extends StatelessWidget {
       child: const TextField(
         decoration: InputDecoration(
           border: InputBorder.none,
-          prefixIcon: Icon(
-            Icons.search,
-            size: 20,
-            color: Color(0xFF897E77),
-          ),
+          prefixIcon: Icon(Icons.search, size: 20, color: Color(0xFF897E77)),
           hintText: 'Cari toko, produk, atau informasi...',
-          hintStyle: TextStyle(
-            fontSize: 11.5,
-            color: Color(0xFFB2AAA5),
-          ),
-          contentPadding: EdgeInsets.only(
-            top: 12,
-            bottom: 12,
-          ),
+          hintStyle: TextStyle(fontSize: 11.5, color: Color(0xFFB2AAA5)),
+          contentPadding: EdgeInsets.only(top: 12, bottom: 12),
         ),
       ),
     );
@@ -345,15 +313,13 @@ class HomeScreen extends StatelessWidget {
   // AI CARD
   // ============================================================
 
-  Widget _buildAiCard() {
+  Widget _buildAiCard(BuildContext context) {
     return Container(
       height: 194,
       decoration: BoxDecoration(
         color: const Color(0xFFF8E6D3),
         borderRadius: BorderRadius.circular(15),
-        border: Border.all(
-          color: const Color(0xFFECD2BA),
-        ),
+        border: Border.all(color: const Color(0xFFECD2BA)),
       ),
       child: Stack(
         children: [
@@ -377,12 +343,7 @@ class HomeScreen extends StatelessWidget {
           // CONTENT
           // =========================
           Padding(
-            padding: const EdgeInsets.fromLTRB(
-              27,
-              13,
-              100,
-              15,
-            ),
+            padding: const EdgeInsets.fromLTRB(27, 13, 100, 15),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -395,9 +356,7 @@ class HomeScreen extends StatelessWidget {
                   decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20),
-                    border: Border.all(
-                      color: const Color(0xFFE7D6C6),
-                    ),
+                    border: Border.all(color: const Color(0xFFE7D6C6)),
                   ),
                   child: const Text(
                     '✦  Asisten Cerdas Sanan',
@@ -441,14 +400,17 @@ class HomeScreen extends StatelessWidget {
                 SizedBox(
                   height: 34,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (_) => BantuMemilihScreen()),
+                      );
+                    },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppTheme.primary,
                       foregroundColor: Colors.white,
                       elevation: 1,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 15,
-                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 15),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -523,17 +485,10 @@ class HomeScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: const Color(0xFFF4E3CF),
         borderRadius: BorderRadius.circular(15),
-        border: Border.all(
-          color: const Color(0xFFE8D2B9),
-        ),
+        border: Border.all(color: const Color(0xFFE8D2B9)),
       ),
       child: Padding(
-        padding: const EdgeInsets.fromLTRB(
-          17,
-          15,
-          10,
-          12,
-        ),
+        padding: const EdgeInsets.fromLTRB(17, 15, 10, 12),
         child: Row(
           children: [
             Expanded(
