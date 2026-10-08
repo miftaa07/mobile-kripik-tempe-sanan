@@ -21,8 +21,8 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 110,
-      height: 215,
+      width: 125,
+      height: 201,
       child: Container(
         decoration: BoxDecoration(
           color: Colors.white,
@@ -47,7 +47,7 @@ class ProductCard extends StatelessWidget {
             // =========================
             SizedBox(
               width: double.infinity,
-              height: 104,
+              height: 98,
               child: _buildImage(),
             ),
 

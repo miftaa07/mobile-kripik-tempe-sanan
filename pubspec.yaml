@@ -63,6 +63,12 @@ flutter:
     - assets/images/robot.png
     - assets/images/toko_rohani.jpg 
     - assets/images/toko_ar-ridlo.jpg
+    - assets/images/splash_background.png
+    - assets/images/tempe_original.jpg
+    - assets/images/tempe_bbq.jpg
+    - assets/images/hampers_sanan.jpg
+    - assets/images/hampers_keluarga.jpg
+    - assets/images/kampung_sanan.jpg
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
