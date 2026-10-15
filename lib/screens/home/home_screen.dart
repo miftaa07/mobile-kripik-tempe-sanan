@@ -6,8 +6,104 @@ import '../../widgets/hampers_card.dart';
 import '../../widgets/product_card.dart';
 import '../../widgets/toko_card.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final TextEditingController _searchController = TextEditingController();
+  String _submittedQuery = '';
+
+  static const List<_HomeSearchItem> _searchItems = [
+    _HomeSearchItem(
+      title: 'Kripik Tempe Original',
+      subtitle: 'Toko Sanan Jaya',
+      category: 'Original',
+      price: 'Rp 10.000',
+      image: 'assets/images/tempe_original.jpg',
+    ),
+    _HomeSearchItem(
+      title: 'Kripik Tempe BBQ',
+      subtitle: 'Toko Bu Susi',
+      category: 'BBQ',
+      price: 'Rp 10.000',
+      image: 'assets/images/tempe_bbq.jpg',
+    ),
+    _HomeSearchItem(
+      title: 'Kripik Tempe Pedas',
+      subtitle: 'Toko Pak Rudi',
+      category: 'Pedas',
+      price: 'Rp 10.000',
+      image: 'assets/images/tempe_original.jpg',
+    ),
+    _HomeSearchItem(
+      title: 'Hampers Spesial Sanan',
+      subtitle: 'Toko Sanan Jaya · Isi 4 varian keripik tempe',
+      category: 'Hampers',
+      price: 'Rp 50.000',
+      image: 'assets/images/hampers_sanan.jpg',
+    ),
+    _HomeSearchItem(
+      title: 'Hampers Keluarga',
+      subtitle: 'Toko Bu Susi · Isi 5 varian keripik tempe',
+      category: 'Hampers',
+      price: 'Rp 75.000',
+      image: 'assets/images/hampers_keluarga.jpg',
+    ),
+    _HomeSearchItem(
+      title: 'Toko Sanan Jaya',
+      subtitle: 'Jl. Sanan No. 12, Malang',
+      category: 'Toko',
+      image: 'assets/images/toko_rohani.jpg',
+    ),
+    _HomeSearchItem(
+      title: 'Toko Ar - Ridlo',
+      subtitle: 'Jl. Sanan No. 28, Malang',
+      category: 'Toko',
+      image: 'assets/images/toko_ar-ridlo.jpg',
+    ),
+    _HomeSearchItem(
+      title: 'Kenali Kampung Sanan',
+      subtitle: 'Kawasan yang dikenal sebagai sentra industri keripik tempe di Malang.',
+      category: 'Informasi',
+      image: 'assets/images/kampung_sanan.jpg',
+    ),
+    _HomeSearchItem(
+      title: 'Asisten Cerdas Sanan',
+      subtitle: 'Temukan toko atau produk keripik tempe sesuai kebutuhanmu.',
+      category: 'Informasi',
+      image: 'assets/images/robot.png',
+    ),
+  ];
+
+  List<_HomeSearchItem> get _searchResults {
+    final query = _submittedQuery.trim().toLowerCase();
+    if (query.isEmpty) return const [];
+
+    return _searchItems.where((item) {
+      return '${item.title} ${item.subtitle} ${item.category} '
+              '${item.price ?? ''} Keripik Tempe'
+          .toLowerCase()
+          .contains(query);
+    }).toList();
+  }
+
+  void _submitSearch([String? value]) {
+    final query = (value ?? _searchController.text).trim();
+    setState(() {
+      _submittedQuery = query;
+    });
+    FocusScope.of(context).unfocus();
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -23,134 +119,139 @@ class HomeScreen extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(21, 12, 21, 0),
             sliver: SliverToBoxAdapter(child: _buildSearch()),
           ),
-          SliverPadding(
-            padding: const EdgeInsets.fromLTRB(21, 22, 21, 0),
-            sliver: SliverToBoxAdapter(child: _buildAssistantCard(context)),
-          ),
-          SliverPadding(
-            padding: const EdgeInsets.fromLTRB(21, 16, 0, 0),
-            sliver: SliverToBoxAdapter(
-              child: _buildSectionHeader('Produk Terbaru'),
+          if (_submittedQuery.isNotEmpty) ...[
+            SliverPadding(
+              padding: const EdgeInsets.fromLTRB(21, 22, 21, 24),
+              sliver: SliverToBoxAdapter(child: _buildSearchResults()),
             ),
-          ),
-          SliverToBoxAdapter(
-            child: SizedBox(
-              height: 214,
-              child: ListView(
-                padding: const EdgeInsets.fromLTRB(21, 12, 21, 0),
-                scrollDirection: Axis.horizontal,
-                children: const [
-                  ProductCard(
-                    image: 'assets/images/tempe_original.jpg',
-                    name: 'Kripik Tempe Original',
-                    store: 'Toko Sanan Jaya',
-                    variant: 'Original',
-                    price: 'Rp 10.000',
-                  ),
-                  SizedBox(width: 10),
-                  ProductCard(
-                    image: 'assets/images/tempe_bbq.jpg',
-                    name: 'Kripik Tempe BBQ',
-                    store: 'Toko Bu Susi',
-                    variant: 'BBQ',
-                    price: 'Rp 10.000',
-                  ),
-                  SizedBox(width: 10),
-                  ProductCard(
-                    image: 'assets/images/tempe_original.jpg',
-                    name: 'Kripik Tempe Pedas',
-                    store: 'Toko Pak Rudi',
-                    variant: 'Pedas',
-                    price: 'Rp 10.000',
-                  ),
-                ],
+          ] else ...[
+            SliverPadding(
+              padding: const EdgeInsets.fromLTRB(21, 22, 21, 0),
+              sliver: SliverToBoxAdapter(child: _buildAssistantCard(context)),
+            ),
+            SliverPadding(
+              padding: const EdgeInsets.fromLTRB(21, 16, 0, 0),
+              sliver: SliverToBoxAdapter(
+                child: _buildSectionHeader('Produk Terbaru'),
               ),
             ),
-          ),
-          SliverPadding(
-            padding: const EdgeInsets.fromLTRB(21, 12, 0, 0),
-            sliver: SliverToBoxAdapter(
-              child: _buildSectionHeader('Paket Hampers'),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: SizedBox(
-              height: 235,
-              child: ListView(
-                padding: const EdgeInsets.fromLTRB(21, 12, 21, 0),
-                scrollDirection: Axis.horizontal,
-                children: const [
-                  HampersCard(
-                    image: 'assets/images/hampers_sanan.jpg',
-                    name: 'Hampers Spesial Sanan',
-                    store: 'Toko Sanan Jaya',
-                    description: 'Isi 4 varian keripik tempe',
-                    price: 'Rp 50.000',
-                  ),
-                  SizedBox(width: 12),
-                  HampersCard(
-                    image: 'assets/images/hampers_keluarga.jpg',
-                    name: 'Hampers Keluarga',
-                    store: 'Toko Bu Susi',
-                    description: 'Isi 5 varian keripik tempe',
-                    price: 'Rp 75.000',
-                  ),
-                  SizedBox(width: 12),
-                  HampersCard(
-                    image: 'assets/images/hampers_sanan.jpg',
-                    name: 'Hampers Spesial Sanan',
-                    store: 'Toko Sanan Jaya',
-                    description: 'Isi 4 varian keripik tempe',
-                    price: 'Rp 50.000',
-                  ),
-                ],
+            SliverToBoxAdapter(
+              child: SizedBox(
+                height: 214,
+                child: ListView(
+                  padding: const EdgeInsets.fromLTRB(21, 12, 21, 0),
+                  scrollDirection: Axis.horizontal,
+                  children: const [
+                    ProductCard(
+                      image: 'assets/images/tempe_original.jpg',
+                      name: 'Kripik Tempe Original',
+                      store: 'Toko Sanan Jaya',
+                      variant: 'Original',
+                      price: 'Rp 10.000',
+                    ),
+                    SizedBox(width: 10),
+                    ProductCard(
+                      image: 'assets/images/tempe_bbq.jpg',
+                      name: 'Kripik Tempe BBQ',
+                      store: 'Toko Bu Susi',
+                      variant: 'BBQ',
+                      price: 'Rp 10.000',
+                    ),
+                    SizedBox(width: 10),
+                    ProductCard(
+                      image: 'assets/images/tempe_original.jpg',
+                      name: 'Kripik Tempe Pedas',
+                      store: 'Toko Pak Rudi',
+                      variant: 'Pedas',
+                      price: 'Rp 10.000',
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
-          SliverPadding(
-            padding: const EdgeInsets.fromLTRB(21, 11, 0, 0),
-            sliver: SliverToBoxAdapter(
-              child: _buildSectionHeader('Temukan Toko di Sanan'),
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: SizedBox(
-              height: 263,
-              child: ListView(
-                padding: const EdgeInsets.fromLTRB(21, 12, 21, 0),
-                scrollDirection: Axis.horizontal,
-                children: const [
-                  TokoCard(
-                    image: 'assets/images/toko_rohani.jpg',
-                    name: 'Toko Sanan Jaya',
-                    address: 'Jl. Sanan No. 12, Malang',
-                    description:
-                        'Toko legendaris dengan berbagai varian keripik tempe.',
-                  ),
-                  SizedBox(width: 12),
-                  TokoCard(
-                    image: 'assets/images/toko_ar-ridlo.jpg',
-                    name: 'Toko Ar - Ridlo',
-                    address: 'Jl. Sanan No. 28, Malang',
-                    description:
-                        'Terkenal dengan rasa khas dan kualitas terjaga.',
-                  ),
-                  SizedBox(width: 12),
-                  TokoCard(
-                    image: 'assets/images/toko_rohani.jpg',
-                    name: 'Toko Sanan Jaya',
-                    address: 'Jl. Sanan No. 12, Malang',
-                    description:
-                        'Toko legendaris dengan berbagai varian keripik tempe.',
-                  ),
-                ],
+            SliverPadding(
+              padding: const EdgeInsets.fromLTRB(21, 12, 0, 0),
+              sliver: SliverToBoxAdapter(
+                child: _buildSectionHeader('Paket Hampers'),
               ),
             ),
-          ),
-          SliverPadding(
-            padding: const EdgeInsets.fromLTRB(21, 18, 21, 20),
-            sliver: SliverToBoxAdapter(child: _buildKnowledgeCard()),
-          ),
+            SliverToBoxAdapter(
+              child: SizedBox(
+                height: 235,
+                child: ListView(
+                  padding: const EdgeInsets.fromLTRB(21, 12, 21, 0),
+                  scrollDirection: Axis.horizontal,
+                  children: const [
+                    HampersCard(
+                      image: 'assets/images/hampers_sanan.jpg',
+                      name: 'Hampers Spesial Sanan',
+                      store: 'Toko Sanan Jaya',
+                      description: 'Isi 4 varian keripik tempe',
+                      price: 'Rp 50.000',
+                    ),
+                    SizedBox(width: 12),
+                    HampersCard(
+                      image: 'assets/images/hampers_keluarga.jpg',
+                      name: 'Hampers Keluarga',
+                      store: 'Toko Bu Susi',
+                      description: 'Isi 5 varian keripik tempe',
+                      price: 'Rp 75.000',
+                    ),
+                    SizedBox(width: 12),
+                    HampersCard(
+                      image: 'assets/images/hampers_sanan.jpg',
+                      name: 'Hampers Spesial Sanan',
+                      store: 'Toko Sanan Jaya',
+                      description: 'Isi 4 varian keripik tempe',
+                      price: 'Rp 50.000',
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SliverPadding(
+              padding: const EdgeInsets.fromLTRB(21, 11, 0, 0),
+              sliver: SliverToBoxAdapter(
+                child: _buildSectionHeader('Temukan Toko di Sanan'),
+              ),
+            ),
+            SliverToBoxAdapter(
+              child: SizedBox(
+                height: 263,
+                child: ListView(
+                  padding: const EdgeInsets.fromLTRB(21, 12, 21, 0),
+                  scrollDirection: Axis.horizontal,
+                  children: const [
+                    TokoCard(
+                      image: 'assets/images/toko_rohani.jpg',
+                      name: 'Toko Sanan Jaya',
+                      address: 'Jl. Sanan No. 12, Malang',
+                      description: 'Toko legendaris dengan berbagai varian keripik tempe.',
+                    ),
+                    SizedBox(width: 12),
+                    TokoCard(
+                      image: 'assets/images/toko_ar-ridlo.jpg',
+                      name: 'Toko Ar - Ridlo',
+                      address: 'Jl. Sanan No. 28, Malang',
+                      description:
+                          'Terkenal dengan rasa khas dan kualitas terjaga.',
+                    ),
+                    SizedBox(width: 12),
+                    TokoCard(
+                      image: 'assets/images/toko_rohani.jpg',
+                      name: 'Toko Sanan Jaya',
+                      address: 'Jl. Sanan No. 12, Malang',
+                      description: 'Toko legendaris dengan berbagai varian keripik tempe.',
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SliverPadding(
+              padding: const EdgeInsets.fromLTRB(21, 18, 21, 20),
+              sliver: SliverToBoxAdapter(child: _buildKnowledgeCard()),
+            ),
+          ],
         ],
       ),
     );
@@ -189,28 +290,6 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
           ),
-          Stack(
-            clipBehavior: Clip.none,
-            children: [
-              const Icon(
-                Icons.notifications_none_rounded,
-                size: 25,
-                color: AppTheme.primary,
-              ),
-              Positioned(
-                right: -1,
-                top: 0,
-                child: Container(
-                  width: 7,
-                  height: 7,
-                  decoration: const BoxDecoration(
-                    color: Color(0xFFD9572B),
-                    shape: BoxShape.circle,
-                  ),
-                ),
-              ),
-            ],
-          ),
         ],
       ),
     );
@@ -231,15 +310,181 @@ class HomeScreen extends StatelessWidget {
           ),
         ],
       ),
-      child: const TextField(
+      child: TextField(
+        controller: _searchController,
+        textAlignVertical: TextAlignVertical.center,
+        textInputAction: TextInputAction.search,
+        onSubmitted: _submitSearch,
+        onChanged: (value) {
+          if (_submittedQuery.isNotEmpty) {
+            setState(() {
+              _submittedQuery = '';
+            });
+          }
+        },
         decoration: InputDecoration(
           border: InputBorder.none,
-          prefixIcon: Icon(Icons.search, size: 20, color: Color(0xFF897E77)),
+          isDense: true,
+          prefixIcon: IconButton(
+            onPressed: _submitSearch,
+            icon: const Icon(Icons.search, size: 20, color: Color(0xFF897E77)),
+            tooltip: 'Cari',
+          ),
+          prefixIconConstraints: const BoxConstraints(
+            minWidth: 43,
+            minHeight: 43,
+          ),
           hintText: 'Cari toko, produk, atau informasi...',
-          hintStyle: TextStyle(fontSize: 11.5, color: Color(0xFFB2AAA5)),
-          contentPadding: EdgeInsets.only(top: 12, bottom: 12),
+          hintStyle: const TextStyle(fontSize: 11.5, color: Color(0xFFB2AAA5)),
+          contentPadding: EdgeInsets.zero,
         ),
       ),
+    );
+  }
+
+  Widget _buildSearchResults() {
+    final results = _searchResults;
+    final screenWidth = MediaQuery.sizeOf(context).width;
+    final cardAspectRatio = screenWidth < 360
+        ? 0.48
+        : screenWidth < 400
+        ? 0.55
+        : 0.63;
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          results.isEmpty
+              ? 'Tidak ada hasil untuk "$_submittedQuery"'
+              : 'Hasil pencarian (${results.length})',
+          style: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w700,
+            color: Color(0xFF2D2723),
+          ),
+        ),
+        if (results.isNotEmpty) ...[
+          const SizedBox(height: 12),
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: results.length,
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              crossAxisSpacing: 13,
+              mainAxisSpacing: 13,
+              childAspectRatio: cardAspectRatio,
+            ),
+            itemBuilder: (context, index) {
+              final item = results[index];
+              return LayoutBuilder(
+                builder: (context, constraints) {
+                  return Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      boxShadow: const [
+                        BoxShadow(
+                          color: Color(0x12000000),
+                          blurRadius: 12,
+                          offset: Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    clipBehavior: Clip.antiAlias,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        SizedBox(
+                          width: double.infinity,
+                          height: constraints.maxWidth * 0.8,
+                          child: Image.asset(
+                            item.image,
+                            fit: BoxFit.cover,
+                            errorBuilder: (context, error, stackTrace) {
+                              return Container(
+                                color: const Color(0xFFF3EFEB),
+                                alignment: Alignment.center,
+                                child: const Icon(
+                                  Icons.image_outlined,
+                                  size: 32,
+                                  color: Color(0xFFB8AEA6),
+                                ),
+                              );
+                            },
+                          ),
+                        ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.fromLTRB(12, 10, 12, 11),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  item.title,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontSize: 14,
+                                    height: 1.2,
+                                    fontWeight: FontWeight.w600,
+                                    color: Color(0xFF211D1A),
+                                  ),
+                                ),
+                                const SizedBox(height: 5),
+                                Text(
+                                  item.subtitle,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontSize: 12,
+                                    color: Color(0xFF9B9DA7),
+                                  ),
+                                ),
+                                const SizedBox(height: 10),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 13,
+                                    vertical: 5,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFFFFF4ED),
+                                    borderRadius: BorderRadius.circular(18),
+                                  ),
+                                  child: Text(
+                                    item.category,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: const TextStyle(
+                                      fontSize: 12,
+                                      color: Color(0xFF87421F),
+                                    ),
+                                  ),
+                                ),
+                                const Spacer(),
+                                if (item.price case final price?)
+                                  Text(
+                                    price,
+                                    style: const TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                      color: Color(0xFF4B2D1E),
+                                    ),
+                                  ),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              );
+            },
+          ),
+        ],
+      ],
     );
   }
 
@@ -250,7 +495,6 @@ class HomeScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: const Color(0xFFF8E6D3),
         borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: const Color(0xFFECD2BA)),
       ),
       child: Stack(
         children: [
@@ -389,7 +633,6 @@ class HomeScreen extends StatelessWidget {
       decoration: BoxDecoration(
         color: const Color(0xFFF4E3CF),
         borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: const Color(0xFFE8D2B9)),
       ),
       child: Padding(
         padding: const EdgeInsets.fromLTRB(17, 15, 10, 12),
@@ -444,6 +687,22 @@ class HomeScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+class _HomeSearchItem {
+  final String title;
+  final String subtitle;
+  final String category;
+  final String image;
+  final String? price;
+
+  const _HomeSearchItem({
+    required this.title,
+    required this.subtitle,
+    required this.category,
+    required this.image,
+    this.price,
+  });
 }
 
 class _MoreButton extends StatelessWidget {

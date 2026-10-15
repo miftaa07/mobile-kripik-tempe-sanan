@@ -23,12 +23,11 @@ class HampersCard extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: const Color(0xFFE8DED5)),
         boxShadow: const [
           BoxShadow(
-            color: Color(0x0D000000),
-            blurRadius: 5,
-            offset: Offset(0, 2),
+            color: Color(0x12000000),
+            blurRadius: 12,
+            offset: Offset(0, 4),
           ),
         ],
       ),

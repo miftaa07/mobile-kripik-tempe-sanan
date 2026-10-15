@@ -25,6 +25,7 @@ class Product {
 // Data dummy bersama. Ganti image dengan path asset asli, mis. 'assets/images/tempe_original.jpg'
 const daftarProduk = [
   Product(
+    image: 'assets/images/tempe_original.jpg',
     name: 'Keripik Tempe Original',
     store: 'Toko Sanan Jaya',
     variant: 'Original',
@@ -33,6 +34,7 @@ const daftarProduk = [
     tujuan: ['Cemilan sendiri', 'Untuk keluarga'],
   ),
   Product(
+    image: 'assets/images/tempe_original.jpg',
     name: 'Keripik Tempe Pedas',
     store: 'Toko Bu Sari',
     variant: 'Pedas',
@@ -41,6 +43,7 @@ const daftarProduk = [
     tujuan: ['Cemilan sendiri', 'Ingin mencoba'],
   ),
   Product(
+    image: 'assets/images/tempe_original.jpg',
     name: 'Keripik Tempe Keju',
     store: 'Toko Lestari',
     variant: 'Keju',
@@ -49,6 +52,7 @@ const daftarProduk = [
     tujuan: ['Oleh-oleh', 'Untuk keluarga'],
   ),
   Product(
+    image: 'assets/images/tempe_bbq.jpg',
     name: 'Keripik Tempe BBQ',
     store: 'Toko Sanan Jaya',
     variant: 'Barbeque',
@@ -57,6 +61,7 @@ const daftarProduk = [
     tujuan: ['Ingin mencoba', 'Cemilan sendiri'],
   ),
   Product(
+    image: 'assets/images/tempe_original.jpg',
     name: 'Keripik Tempe Balado',
     store: 'Toko Berkah',
     variant: 'Balado',
@@ -65,6 +70,7 @@ const daftarProduk = [
     tujuan: ['Oleh-oleh'],
   ),
   Product(
+    image: 'assets/images/hampers_sanan.jpg',
     name: 'Paket Keripik Tempe Spesial',
     store: 'Toko Lestari',
     variant: 'Original',
