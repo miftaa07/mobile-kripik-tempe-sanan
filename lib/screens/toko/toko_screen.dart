@@ -1,8 +1,8 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../theme/app_theme.dart';
+import 'toko_detail_screen.dart';
 
 class TokoScreen extends StatefulWidget {
   const TokoScreen({super.key});
@@ -12,17 +12,12 @@ class TokoScreen extends StatefulWidget {
 }
 
 class _TokoScreenState extends State<TokoScreen> {
-  final TextEditingController _searchController =
-      TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
 
   String? _searchError;
   String _kategoriAktif = 'Semua';
 
-  final List<String> _kategori = const [
-    'Semua',
-    'Original',
-    'Pedas Manis',
-  ];
+  final List<String> _kategori = const ['Semua', 'Original', 'Pedas Manis'];
 
   final List<_DataToko> _daftarToko = const [
     _DataToko(
@@ -31,11 +26,7 @@ class _TokoScreenState extends State<TokoScreen> {
       jamBuka: '07.00 - 21.00 WIB',
       lokasi: 'Sentra Utama',
       kategori: ['Original'],
-      fasilitas: [
-        'Oleh-oleh Lengkap',
-        'Tempat Parkir',
-        'Goreng Fresh',
-      ],
+      fasilitas: ['Oleh-oleh Lengkap', 'Tempat Parkir', 'Goreng Fresh'],
       gambar: 'assets/images/toko_rohani.jpg',
     ),
     _DataToko(
@@ -44,10 +35,7 @@ class _TokoScreenState extends State<TokoScreen> {
       jamBuka: '08.00 - 21.30 WIB',
       lokasi: 'Sejak 1988',
       kategori: ['Original', 'Pedas Manis'],
-      fasilitas: [
-        'Pelopor Rasa Daun Jeruk & Pedas Manis',
-        'Produksi Mandiri',
-      ],
+      fasilitas: ['Pelopor Rasa Daun Jeruk & Pedas Manis', 'Produksi Mandiri'],
       gambar: 'assets/images/toko_ar-ridlo.jpg',
     ),
     _DataToko(
@@ -56,10 +44,7 @@ class _TokoScreenState extends State<TokoScreen> {
       jamBuka: '08.00 - 17.00 WIB',
       lokasi: 'Sentra Gang 3',
       kategori: ['Original'],
-      fasilitas: [
-        'Pengrajin Rumahan',
-        'Bahan Kedelai Alami',
-      ],
+      fasilitas: ['Pengrajin Rumahan', 'Bahan Kedelai Alami'],
       gambar: 'assets/images/toko_rohani.jpg',
     ),
     _DataToko(
@@ -68,11 +53,7 @@ class _TokoScreenState extends State<TokoScreen> {
       jamBuka: '07.00 - 21.00 WIB',
       lokasi: 'Sentra Utama',
       kategori: ['Original'],
-      fasilitas: [
-        'Oleh-oleh Lengkap',
-        'Tempat Parkir',
-        'Goreng Fresh',
-      ],
+      fasilitas: ['Oleh-oleh Lengkap', 'Tempat Parkir', 'Goreng Fresh'],
       gambar: 'assets/images/toko_ar-ridlo.jpg',
     ),
     _DataToko(
@@ -81,10 +62,7 @@ class _TokoScreenState extends State<TokoScreen> {
       jamBuka: '08.00 - 21.30 WIB',
       lokasi: 'Sejak 1988',
       kategori: ['Original', 'Pedas Manis'],
-      fasilitas: [
-        'Pelopor Rasa Daun Jeruk & Pedas Manis',
-        'Produksi Mandiri',
-      ],
+      fasilitas: ['Pelopor Rasa Daun Jeruk & Pedas Manis', 'Produksi Mandiri'],
       gambar: 'assets/images/toko_rohani.jpg',
     ),
   ];
@@ -95,9 +73,7 @@ class _TokoScreenState extends State<TokoScreen> {
       return null;
     }
 
-    final pola = RegExp(
-      r"^[a-zA-Z0-9À-ÿ\s.,()&/-]+$",
-    );
+    final pola = RegExp(r"^[a-zA-Z0-9À-ÿ\s.,()&/-]+$");
 
     if (!pola.hasMatch(value)) {
       return 'Gunakan huruf, angka, dan tanda baca yang diizinkan.';
@@ -112,15 +88,13 @@ class _TokoScreenState extends State<TokoScreen> {
       return [];
     }
 
-    final kataKunci =
-        _searchController.text.trim().toLowerCase();
+    final kataKunci = _searchController.text.trim().toLowerCase();
 
     return _daftarToko.where((toko) {
-      final cocokNama =
-          toko.nama.toLowerCase().contains(kataKunci);
+      final cocokNama = toko.nama.toLowerCase().contains(kataKunci);
 
-      final cocokKategori = _kategoriAktif == 'Semua' ||
-          toko.kategori.contains(_kategoriAktif);
+      final cocokKategori =
+          _kategoriAktif == 'Semua' || toko.kategori.contains(_kategoriAktif);
 
       return cocokNama && cocokKategori;
     }).toList();
@@ -168,18 +142,13 @@ class _TokoScreenState extends State<TokoScreen> {
                             ? 'Periksa kembali kata pencarian'
                             : 'Toko tidak ditemukan',
                         textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          color: AppTheme.textGrey,
-                        ),
+                        style: const TextStyle(color: AppTheme.textGrey),
                       ),
                     )
                   : ListView.separated(
-                      padding: const EdgeInsets.fromLTRB(
-                        18, 0, 18, 18,
-                      ),
+                      padding: const EdgeInsets.fromLTRB(18, 0, 18, 18),
                       itemCount: toko.length,
-                      separatorBuilder: (_, __) =>
-                          const SizedBox(height: 14),
+                      separatorBuilder: (_, __) => const SizedBox(height: 14),
                       itemBuilder: (context, index) {
                         return _buildStoreCard(toko[index]);
                       },
@@ -226,9 +195,7 @@ class _TokoScreenState extends State<TokoScreen> {
             controller: _searchController,
             onChanged: _onSearchChanged,
             inputFormatters: [
-              FilteringTextInputFormatter.deny(
-                RegExp(r'''[@;'"<>\\]'''),
-              ),
+              FilteringTextInputFormatter.deny(RegExp(r'''[@;'"<>\\]''')),
             ],
             decoration: InputDecoration(
               hintText: 'Cari toko...',
@@ -251,8 +218,7 @@ class _TokoScreenState extends State<TokoScreen> {
               errorText: _searchError,
               filled: true,
               fillColor: const Color(0xFFF3F0EF),
-              contentPadding:
-                  const EdgeInsets.symmetric(vertical: 12),
+              contentPadding: const EdgeInsets.symmetric(vertical: 12),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
                 borderSide: BorderSide.none,
@@ -263,21 +229,15 @@ class _TokoScreenState extends State<TokoScreen> {
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(28),
-                borderSide: const BorderSide(
-                  color: AppTheme.primary,
-                ),
+                borderSide: const BorderSide(color: AppTheme.primary),
               ),
               errorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
-                borderSide: const BorderSide(
-                  color: Colors.red,
-                ),
+                borderSide: const BorderSide(color: Colors.red),
               ),
               focusedErrorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
-                borderSide: const BorderSide(
-                  color: Colors.red,
-                ),
+                borderSide: const BorderSide(color: Colors.red),
               ),
             ),
           ),
@@ -293,8 +253,7 @@ class _TokoScreenState extends State<TokoScreen> {
         padding: const EdgeInsets.fromLTRB(27, 14, 20, 4),
         scrollDirection: Axis.horizontal,
         itemCount: _kategori.length,
-        separatorBuilder: (_, __) =>
-            const SizedBox(width: 8),
+        separatorBuilder: (_, __) => const SizedBox(width: 8),
         itemBuilder: (context, index) {
           final item = _kategori[index];
           final terpilih = item == _kategoriAktif;
@@ -311,16 +270,12 @@ class _TokoScreenState extends State<TokoScreen> {
             labelStyle: TextStyle(
               fontSize: 12,
               fontWeight: FontWeight.w500,
-              color: terpilih
-                  ? Colors.white
-                  : AppTheme.textDark,
+              color: terpilih ? Colors.white : AppTheme.textDark,
             ),
             backgroundColor: Colors.white,
             selectedColor: AppTheme.primary,
             side: BorderSide(
-              color: terpilih
-                  ? AppTheme.primary
-                  : const Color(0xFFE8D8CC),
+              color: terpilih ? AppTheme.primary : const Color(0xFFE8D8CC),
             ),
           );
         },
@@ -329,154 +284,159 @@ class _TokoScreenState extends State<TokoScreen> {
   }
 
   Widget _buildStoreCard(_DataToko toko) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(14),
-        border: Border.all(
-          color: const Color(0xFFEDE8E4),
-        ),
-        boxShadow: const [
-          BoxShadow(
-            color: Color(0x0D000000),
-            blurRadius: 5,
-            offset: Offset(0, 2),
+    void bukaDetail() {
+      Navigator.of(context).push(
+        MaterialPageRoute<void>(
+          builder: (_) => TokoDetailScreen(
+            nama: toko.nama,
+            gambar: toko.gambar,
+            alamat: toko.alamat,
+            jamBuka: toko.jamBuka,
+            deskripsi: 'Salah satu pelopor olahan keripik tempe renyah tanpa bahan pengawet di Sanan. Menggunakan kedelai pilihan dengan teknik peragian tradisional dan bumbu rempah alami khas Malang.',
           ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          ClipRRect(
-            borderRadius: const BorderRadius.vertical(
-              top: Radius.circular(14),
+        ),
+      );
+    }
+
+    return InkWell(
+      onTap: bukaDetail,
+      borderRadius: BorderRadius.circular(14),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(14),
+          border: Border.all(color: const Color(0xFFEDE8E4)),
+          boxShadow: const [
+            BoxShadow(
+              color: Color(0x0D000000),
+              blurRadius: 5,
+              offset: Offset(0, 2),
             ),
-            child: SizedBox(
-              height: 164,
-              width: double.infinity,
-              child: Stack(
-                fit: StackFit.expand,
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            ClipRRect(
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(14),
+              ),
+              child: SizedBox(
+                height: 164,
+                width: double.infinity,
+                child: Stack(
+                  fit: StackFit.expand,
+                  children: [
+                    Image.asset(
+                      toko.gambar,
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) {
+                        return Container(
+                          color: const Color(0xFFF3EEE9),
+                          child: const Icon(
+                            Icons.storefront_outlined,
+                            size: 48,
+                            color: Color(0xFFB7ADA5),
+                          ),
+                        );
+                      },
+                    ),
+                    Positioned(
+                      top: 10,
+                      left: 11,
+                      child: _imageLabel(
+                        icon: Icons.circle,
+                        text: 'Buka • ${toko.jamBuka}',
+                        backgroundColor: const Color(0xFFF8F8EF),
+                        iconColor: const Color(0xFF83A65B),
+                      ),
+                    ),
+                    Positioned(
+                      top: 10,
+                      right: 10,
+                      child: _imageLabel(
+                        icon: Icons.storefront,
+                        text: toko.lokasi,
+                        backgroundColor: const Color(0xB3201D1B),
+                        iconColor: Colors.white,
+                        textColor: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Image.asset(
-                    toko.gambar,
-                    fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) {
-                      return Container(
-                        color: const Color(0xFFF3EEE9),
-                        child: const Icon(
-                          Icons.storefront_outlined,
-                          size: 48,
-                          color: Color(0xFFB7ADA5),
-                        ),
-                      );
-                    },
-                  ),
-                  Positioned(
-                    top: 10,
-                    left: 11,
-                    child: _imageLabel(
-                      icon: Icons.circle,
-                      text: 'Buka • ${toko.jamBuka}',
-                      backgroundColor:
-                          const Color(0xFFF8F8EF),
-                      iconColor: const Color(0xFF83A65B),
+                  Text(
+                    toko.nama,
+                    style: const TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w700,
+                      color: AppTheme.textDark,
                     ),
                   ),
-                  Positioned(
-                    top: 10,
-                    right: 10,
-                    child: _imageLabel(
-                      icon: Icons.storefront,
-                      text: toko.lokasi,
-                      backgroundColor:
-                          const Color(0xB3201D1B),
-                      iconColor: Colors.white,
-                      textColor: Colors.white,
+                  const SizedBox(height: 4),
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Icon(
+                        Icons.location_on_outlined,
+                        size: 16,
+                        color: AppTheme.primary,
+                      ),
+                      const SizedBox(width: 4),
+                      Expanded(
+                        child: Text(
+                          toko.alamat,
+                          style: const TextStyle(
+                            fontSize: 11,
+                            color: AppTheme.textGrey,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 9),
+                  Wrap(
+                    spacing: 6,
+                    runSpacing: 6,
+                    children: toko.fasilitas
+                        .map((fasilitas) => _featureTag(fasilitas))
+                        .toList(),
+                  ),
+                  const SizedBox(height: 13),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 40,
+                    child: ElevatedButton.icon(
+                      onPressed: bukaDetail,
+                      icon: const Icon(Icons.arrow_forward, size: 17),
+                      label: const Text(
+                        'Lihat Detail Toko',
+                        style: TextStyle(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w600,
+                        ),
+                      ),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppTheme.primary,
+                        foregroundColor: Colors.white,
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(11),
+                        ),
+                      ),
                     ),
                   ),
                 ],
               ),
             ),
-          ),
-          Padding(
-            padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  toko.nama,
-                  style: const TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                    color: AppTheme.textDark,
-                  ),
-                ),
-                const SizedBox(height: 4),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Icon(
-                      Icons.location_on_outlined,
-                      size: 16,
-                      color: AppTheme.primary,
-                    ),
-                    const SizedBox(width: 4),
-                    Expanded(
-                      child: Text(
-                        toko.alamat,
-                        style: const TextStyle(
-                          fontSize: 11,
-                          color: AppTheme.textGrey,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 9),
-                Wrap(
-                  spacing: 6,
-                  runSpacing: 6,
-                  children: toko.fasilitas
-                      .map((fasilitas) => _featureTag(fasilitas))
-                      .toList(),
-                ),
-                const SizedBox(height: 13),
-                SizedBox(
-                  width: double.infinity,
-                  height: 40,
-                  child: ElevatedButton.icon(
-                    onPressed: () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('Detail ${toko.nama}'),
-                        ),
-                      );
-                    },
-                    icon: const Icon(
-                      Icons.arrow_forward,
-                      size: 17,
-                    ),
-                    label: const Text(
-                      'Lihat Detail Toko',
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: AppTheme.primary,
-                      foregroundColor: Colors.white,
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(11),
-                      ),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
@@ -489,10 +449,7 @@ class _TokoScreenState extends State<TokoScreen> {
     Color textColor = AppTheme.textDark,
   }) {
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 8,
-        vertical: 5,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
       decoration: BoxDecoration(
         color: backgroundColor,
         borderRadius: BorderRadius.circular(16),
@@ -517,10 +474,7 @@ class _TokoScreenState extends State<TokoScreen> {
 
   Widget _featureTag(String text) {
     return Container(
-      padding: const EdgeInsets.symmetric(
-        horizontal: 8,
-        vertical: 5,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
       decoration: BoxDecoration(
         color: const Color(0xFFF4ECE8),
         borderRadius: BorderRadius.circular(8),

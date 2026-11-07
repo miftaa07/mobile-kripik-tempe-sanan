@@ -5,6 +5,7 @@ import '../../theme/app_theme.dart';
 import '../../widgets/hampers_card.dart';
 import '../../widgets/product_card.dart';
 import '../../widgets/toko_card.dart';
+import '../toko/toko_detail_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -221,12 +222,23 @@ class _HomeScreenState extends State<HomeScreen> {
                 child: ListView(
                   padding: const EdgeInsets.fromLTRB(21, 12, 21, 0),
                   scrollDirection: Axis.horizontal,
-                  children: const [
+                  children: [
                     TokoCard(
                       image: 'assets/images/toko_rohani.jpg',
                       name: 'Toko Sanan Jaya',
                       address: 'Jl. Sanan No. 12, Malang',
                       description: 'Toko legendaris dengan berbagai varian keripik tempe.',
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (_) => const TokoDetailScreen(
+                            nama: 'Toko Sanan Jaya',
+                            gambar: 'assets/images/toko_rohani.jpg',
+                            alamat: 'Jl. Sanan No. 12, Malang',
+                            jamBuka: '07.00 - 21.00 WIB',
+                            deskripsi: 'Toko legendaris dengan berbagai varian keripik tempe khas Kampung Sanan.',
+                          ),
+                        ),
+                      ),
                     ),
                     SizedBox(width: 12),
                     TokoCard(
@@ -235,6 +247,17 @@ class _HomeScreenState extends State<HomeScreen> {
                       address: 'Jl. Sanan No. 28, Malang',
                       description:
                           'Terkenal dengan rasa khas dan kualitas terjaga.',
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (_) => const TokoDetailScreen(
+                            nama: 'Toko Ar - Ridlo',
+                            gambar: 'assets/images/toko_ar-ridlo.jpg',
+                            alamat: 'Jl. Sanan No. 28, Malang',
+                            jamBuka: '08.00 - 21.30 WIB',
+                            deskripsi: 'Toko keripik tempe Sanan dengan rasa khas dan kualitas yang selalu terjaga.',
+                          ),
+                        ),
+                      ),
                     ),
                     SizedBox(width: 12),
                     TokoCard(
@@ -242,6 +265,17 @@ class _HomeScreenState extends State<HomeScreen> {
                       name: 'Toko Sanan Jaya',
                       address: 'Jl. Sanan No. 12, Malang',
                       description: 'Toko legendaris dengan berbagai varian keripik tempe.',
+                      onTap: () => Navigator.of(context).push(
+                        MaterialPageRoute<void>(
+                          builder: (_) => const TokoDetailScreen(
+                            nama: 'Toko Sanan Jaya',
+                            gambar: 'assets/images/toko_rohani.jpg',
+                            alamat: 'Jl. Sanan No. 12, Malang',
+                            jamBuka: '07.00 - 21.00 WIB',
+                            deskripsi: 'Toko legendaris dengan berbagai varian keripik tempe khas Kampung Sanan.',
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 ),
