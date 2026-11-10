@@ -25,6 +25,11 @@ class _MainScreenState extends State<MainScreen> {
           _currentIndex = 0;
         });
       },
+      onNavigateTab: (index) {
+        setState(() {
+          _currentIndex = index;
+        });
+      },
     ),
     LokasiScreen(),
   ];

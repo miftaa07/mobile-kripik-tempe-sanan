@@ -6,8 +6,9 @@ import 'knowledge_detail_screen.dart';
 
 class PengetahuanScreen extends StatelessWidget {
   final VoidCallback? onBack;
+  final ValueChanged<int>? onNavigateTab;
 
-  const PengetahuanScreen({super.key, this.onBack});
+  const PengetahuanScreen({super.key, this.onBack, this.onNavigateTab});
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +30,10 @@ class PengetahuanScreen extends StatelessWidget {
                   article: article,
                   onTap: () => Navigator.of(context).push(
                     MaterialPageRoute<void>(
-                      builder: (_) => KnowledgeDetailScreen(article: article),
+                      builder: (_) => KnowledgeDetailScreen(
+                        article: article,
+                        onNavigateTab: onNavigateTab,
+                      ),
                     ),
                   ),
                 );
