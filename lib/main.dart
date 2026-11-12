@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 
-import 'screens/splash/splash_screen.dart';
-import 'theme/app_theme.dart';
+import 'core/di/app_dependencies.dart';
+import 'core/theme/app_theme.dart';
+import 'features/splash/views/splash_screen.dart';
 
 void main() {
   runApp(const KampungSananApp());
 }
 
 class KampungSananApp extends StatelessWidget {
-  const KampungSananApp({super.key});
+  final AppDependencies? dependencies;
+
+  const KampungSananApp({super.key, this.dependencies});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +19,9 @@ class KampungSananApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'Kampung Keripik Tempe Sanan',
       theme: AppTheme.theme,
-      home: const SplashScreen(),
+      home: SplashScreen(
+        dependencies: dependencies ?? AppDependencies.instance,
+      ),
     );
   }
 }

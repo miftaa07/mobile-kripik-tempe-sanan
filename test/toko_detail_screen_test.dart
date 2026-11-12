@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kampung_keripik_tempe/screens/toko/toko_detail_screen.dart';
+import 'package:kampung_keripik_tempe/features/toko/views/toko_detail_screen.dart';
 
 void main() {
   testWidgets('detail toko menampilkan informasi dan katalog produk', (

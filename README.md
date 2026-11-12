@@ -1,17 +1,35 @@
-# kampung_keripik_tempe
+# Kampung Keripik Tempe Sanan
 
-A new Flutter project.
+Aplikasi Flutter untuk menjelajahi produk, toko, pengetahuan, dan lokasi sentra
+keripik tempe Kampung Sanan.
 
-## Getting Started
+## Struktur MVVM
 
-This project is a starting point for a Flutter application.
+```text
+lib/
+├── core/
+│   ├── di/              # Dependency container aplikasi
+│   ├── theme/           # Tema bersama
+│   └── utils/           # Utilitas lintas fitur
+├── features/
+│   ├── bantu_memilih/    # models, data_sources, repositories, viewmodels, views
+│   ├── home/             # models, data_sources, repositories, viewmodels, views
+│   ├── lokasi/           # models, data_sources, repositories, viewmodels, views
+│   ├── navigation/       # viewmodels, views, widgets
+│   ├── pengetahuan/      # models, data_sources, repositories, viewmodels, views
+│   ├── splash/           # viewmodels, views
+│   └── toko/             # models, data_sources, repositories, viewmodels, views, widgets
+```
 
-A few resources to get you started if this is your first Flutter project:
+Alur data mengikuti `View → ViewModel → Repository → Data Source`. Data masih
+menggunakan fixture lokal; backend API dan database belum diintegrasikan.
+`AppDependencies` di `core/di` menyusun dependency repository aplikasi.
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+## Menjalankan dan menguji
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```sh
+flutter pub get
+flutter run
+flutter analyze
+flutter test
+```

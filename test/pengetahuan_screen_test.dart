@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kampung_keripik_tempe/models/knowledge_article.dart';
-import 'package:kampung_keripik_tempe/screens/pengetahuan/pengetahuan_screen.dart';
-import 'package:kampung_keripik_tempe/widgets/bottom_navbar.dart';
+import 'package:kampung_keripik_tempe/features/pengetahuan/data_sources/knowledge_local_data_source.dart';
+import 'package:kampung_keripik_tempe/features/pengetahuan/views/pengetahuan_screen.dart';
+import 'package:kampung_keripik_tempe/features/navigation/widgets/bottom_navbar.dart';
 
 void main() {
   testWidgets('kartu eksplorasi membuka halaman informasinya', (tester) async {
