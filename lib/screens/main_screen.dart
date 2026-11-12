@@ -31,7 +31,13 @@ class _MainScreenState extends State<MainScreen> {
         });
       },
     ),
-    LokasiScreen(),
+    LokasiScreen(
+      onBack: () {
+        setState(() {
+          _currentIndex = 0;
+        });
+      },
+    ),
   ];
 
   @override
