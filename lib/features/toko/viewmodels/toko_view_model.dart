@@ -24,8 +24,7 @@ class TokoViewModel extends ChangeNotifier {
     return _repository.getTokos().where((toko) {
       final matchesName = toko.nama.toLowerCase().contains(query);
       final matchesCategory =
-          _activeCategory == 'Semua' ||
-          toko.kategori.contains(_activeCategory);
+          _activeCategory == 'Semua' || toko.kategori.contains(_activeCategory);
       return matchesName && matchesCategory;
     }).toList();
   }

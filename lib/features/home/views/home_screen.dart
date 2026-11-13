@@ -160,9 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       index++
                     ) ...[
                       if (index > 0) const SizedBox(width: 12),
-                      _buildFeaturedStoreCard(
-                        _viewModel.featuredStores[index],
-                      ),
+                      _buildFeaturedStoreCard(_viewModel.featuredStores[index]),
                     ],
                   ],
                 ),

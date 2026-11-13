@@ -31,10 +31,7 @@ class _MainScreenState extends State<MainScreen> {
       onNavigateTab: _viewModel.selectTab,
       dependencies: _dependencies,
     ),
-    LokasiScreen(
-      onBack: _viewModel.goHome,
-      dependencies: _dependencies,
-    ),
+    LokasiScreen(onBack: _viewModel.goHome, dependencies: _dependencies),
   ];
 
   @override
@@ -42,10 +39,7 @@ class _MainScreenState extends State<MainScreen> {
     return AnimatedBuilder(
       animation: _viewModel,
       builder: (context, _) => Scaffold(
-        body: IndexedStack(
-          index: _viewModel.currentIndex,
-          children: _screens,
-        ),
+        body: IndexedStack(index: _viewModel.currentIndex, children: _screens),
         bottomNavigationBar: BottomNavbar(
           currentIndex: _viewModel.currentIndex,
           onTap: _viewModel.selectTab,

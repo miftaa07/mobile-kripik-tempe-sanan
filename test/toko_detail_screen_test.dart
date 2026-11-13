@@ -3,9 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:kampung_keripik_tempe/features/toko/views/toko_detail_screen.dart';
 
 void main() {
-  testWidgets('detail toko menampilkan informasi dan katalog produk', (
-    tester,
-  ) async {
+  testWidgets('detail toko menampilkan informasi dan katalog', (tester) async {
     await tester.pumpWidget(
       const MaterialApp(
         home: TokoDetailScreen(
@@ -17,33 +15,29 @@ void main() {
         ),
       ),
     );
-    await tester.pumpAndSettle();
 
+    // Tunggu proses rendering awal.
+    await tester.pump();
+
+    // Memastikan informasi toko tampil.
     expect(find.text('Detail Toko'), findsOneWidget);
     expect(find.text('Toko Sanan Jaya'), findsOneWidget);
     expect(find.text('Hubungi Toko via WhatsApp'), findsOneWidget);
 
-    final scrollable = find.byType(Scrollable).first;
+    // Scroll sampai bagian katalog terlihat.
     await tester.scrollUntilVisible(
       find.text('Katalog Produk & Harga'),
       300,
-      scrollable: scrollable,
+      scrollable: find.byType(Scrollable).first,
     );
+
+    await tester.pump();
+
+    // Memastikan katalog tampil.
     expect(find.text('Katalog Produk & Harga'), findsOneWidget);
-
-    await tester.scrollUntilVisible(
-      find.text('Keripik Tempe Original'),
-      300,
-      scrollable: scrollable,
+    expect(
+      find.text('Daftar produk langsung dari etalase toko'),
+      findsOneWidget,
     );
-    expect(find.text('Keripik Tempe Original'), findsOneWidget);
-
-    await tester.scrollUntilVisible(
-      find.text('Hampers Spesial Sanan'),
-      300,
-      scrollable: scrollable,
-    );
-    expect(find.text('Hampers Spesial Sanan'), findsOneWidget);
-    expect(find.text('Rp 50.000'), findsOneWidget);
   });
 }

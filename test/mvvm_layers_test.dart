@@ -11,7 +11,6 @@ import 'package:kampung_keripik_tempe/features/pengetahuan/data_sources/knowledg
 import 'package:kampung_keripik_tempe/features/pengetahuan/repositories/knowledge_repository.dart';
 import 'package:kampung_keripik_tempe/features/toko/data_sources/product_local_data_source.dart';
 import 'package:kampung_keripik_tempe/features/toko/data_sources/toko_local_data_source.dart';
-import 'package:kampung_keripik_tempe/features/toko/repositories/product_repository.dart';
 import 'package:kampung_keripik_tempe/features/toko/repositories/toko_repository.dart';
 import 'package:kampung_keripik_tempe/features/toko/viewmodels/toko_view_model.dart';
 
@@ -46,12 +45,10 @@ void main() {
   });
 
   test('repositories expose the existing knowledge and location fixtures', () {
-    final knowledge = KnowledgeRepository(
-      const KnowledgeLocalDataSource(),
-    ).getArticles();
-    final guide = LocationRepository(
-      const LocationLocalDataSource(),
-    ).getGuide();
+    final knowledge = KnowledgeRepository(const KnowledgeLocalDataSource())
+        .getArticles();
+    final guide = LocationRepository(const LocationLocalDataSource())
+        .getGuide();
 
     expect(knowledge, hasLength(4));
     expect(guide.transportOptions, hasLength(3));
@@ -59,9 +56,8 @@ void main() {
   });
 
   test('recommendation repository returns ranked matching products', () {
-    final products = ProductRepository(const ProductLocalDataSource());
     final repository = RecommendationRepository(
-      RecommendationLocalDataSource(products),
+      RecommendationLocalDataSource(const ProductLocalDataSource()),
     );
     final recommendations = repository.getRecommendations(
       const ProductPreferences(

@@ -10,13 +10,12 @@ class LokasiScreen extends StatelessWidget {
     this.onBack,
     LocationViewModel? viewModel,
     AppDependencies? dependencies,
-  })
-    : _viewModel =
-          viewModel ??
-          LocationViewModel(
-            (dependencies ?? AppDependencies.instance).locationRepository,
-            (dependencies ?? AppDependencies.instance).externalLinkLauncher,
-          );
+  }) : _viewModel =
+           viewModel ??
+           LocationViewModel(
+             (dependencies ?? AppDependencies.instance).locationRepository,
+             (dependencies ?? AppDependencies.instance).externalLinkLauncher,
+           );
 
   final VoidCallback? onBack;
   final LocationViewModel _viewModel;
@@ -282,8 +281,7 @@ class LokasiScreen extends StatelessWidget {
                   : Icons.directions_transit_outlined,
               title: _viewModel.guide.transportOptions[index].title,
               duration: _viewModel.guide.transportOptions[index].duration,
-              description:
-                  _viewModel.guide.transportOptions[index].description,
+              description: _viewModel.guide.transportOptions[index].description,
             ),
             if (index < _viewModel.guide.transportOptions.length - 1)
               const SizedBox(height: 8),

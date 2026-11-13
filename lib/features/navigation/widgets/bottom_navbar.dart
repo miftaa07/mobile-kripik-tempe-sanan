@@ -15,12 +15,7 @@ class BottomNavbar extends StatelessWidget {
     return Container(
       decoration: const BoxDecoration(
         color: Colors.white,
-        border: Border(
-          top: BorderSide(
-            color: Color(0xFFE8E1DB),
-            width: 1,
-          ),
-        ),
+        border: Border(top: BorderSide(color: Color(0xFFE8E1DB), width: 1)),
       ),
       child: SafeArea(
         top: false,
@@ -96,8 +91,7 @@ class _NavItem extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
                 fontSize: 10,
-                fontWeight:
-                    selected ? FontWeight.w600 : FontWeight.w400,
+                fontWeight: selected ? FontWeight.w600 : FontWeight.w400,
                 color: selected
                     ? const Color(0xFF96491F)
                     : const Color(0xFF85807C),

@@ -42,23 +42,14 @@ class ProductCard extends StatelessWidget {
             // =========================
             // IMAGE
             // =========================
-            SizedBox(
-              width: double.infinity,
-              height: 98,
-              child: _buildImage(),
-            ),
+            SizedBox(width: double.infinity, height: 98, child: _buildImage()),
 
             // =========================
             // PRODUCT INFORMATION
             // =========================
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(
-                  8,
-                  7,
-                  8,
-                  7,
-                ),
+                padding: const EdgeInsets.fromLTRB(8, 7, 8, 7),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [

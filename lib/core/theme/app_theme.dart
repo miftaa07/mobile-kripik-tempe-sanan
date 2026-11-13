@@ -12,15 +12,9 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       scaffoldBackgroundColor: background,
-      colorScheme: ColorScheme.fromSeed(
-        seedColor: primary,
-        primary: primary,
-      ),
+      colorScheme: ColorScheme.fromSeed(seedColor: primary, primary: primary),
       fontFamily: 'Arial',
-      appBarTheme: const AppBarTheme(
-        backgroundColor: background,
-        elevation: 0,
-      ),
+      appBarTheme: const AppBarTheme(backgroundColor: background, elevation: 0),
     );
   }
 }

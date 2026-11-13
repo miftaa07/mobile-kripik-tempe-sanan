@@ -56,15 +56,13 @@ class HomeLocalDataSource {
     ),
     HomeSearchItem(
       title: 'Kenali Kampung Sanan',
-      subtitle:
-          'Kawasan yang dikenal sebagai sentra industri keripik tempe di Malang.',
+      subtitle: 'Kawasan yang dikenal sebagai sentra industri keripik tempe di Malang.',
       category: 'Informasi',
       image: 'assets/images/kampung_sanan.jpg',
     ),
     HomeSearchItem(
       title: 'Asisten Cerdas Sanan',
-      subtitle:
-          'Temukan toko atau produk keripik tempe sesuai kebutuhanmu.',
+      subtitle: 'Temukan toko atau produk keripik tempe sesuai kebutuhanmu.',
       category: 'Informasi',
       image: 'assets/images/robot.png',
     ),
@@ -128,8 +126,7 @@ class HomeLocalDataSource {
       address: 'Jl. Sanan No. 12, Malang',
       openingHours: '07.00 - 21.00 WIB',
       description: 'Toko legendaris dengan berbagai varian keripik tempe.',
-      detailDescription:
-          'Toko legendaris dengan berbagai varian keripik tempe khas Kampung Sanan.',
+      detailDescription: 'Toko legendaris dengan berbagai varian keripik tempe khas Kampung Sanan.',
     ),
     HomeStoreHighlight(
       name: 'Toko Ar - Ridlo',
@@ -137,8 +134,7 @@ class HomeLocalDataSource {
       address: 'Jl. Sanan No. 28, Malang',
       openingHours: '08.00 - 21.30 WIB',
       description: 'Terkenal dengan rasa khas dan kualitas terjaga.',
-      detailDescription:
-          'Toko keripik tempe Sanan dengan rasa khas dan kualitas yang selalu terjaga.',
+      detailDescription: 'Toko keripik tempe Sanan dengan rasa khas dan kualitas yang selalu terjaga.',
     ),
     HomeStoreHighlight(
       name: 'Toko Sanan Jaya',
@@ -146,8 +142,7 @@ class HomeLocalDataSource {
       address: 'Jl. Sanan No. 12, Malang',
       openingHours: '07.00 - 21.00 WIB',
       description: 'Toko legendaris dengan berbagai varian keripik tempe.',
-      detailDescription:
-          'Toko legendaris dengan berbagai varian keripik tempe khas Kampung Sanan.',
+      detailDescription: 'Toko legendaris dengan berbagai varian keripik tempe khas Kampung Sanan.',
     ),
   ];
 }

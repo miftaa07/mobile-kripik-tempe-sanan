@@ -16,7 +16,8 @@ class HomeViewModel extends ChangeNotifier {
   String get submittedQuery => _submittedQuery;
   List<Product> get featuredProducts => _repository.getFeaturedProducts();
   List<HampersItem> get featuredHampers => _repository.getFeaturedHampers();
-  List<HomeStoreHighlight> get featuredStores => _repository.getFeaturedStores();
+  List<HomeStoreHighlight> get featuredStores =>
+      _repository.getFeaturedStores();
 
   List<HomeSearchItem> get searchResults {
     final query = _submittedQuery.trim().toLowerCase();

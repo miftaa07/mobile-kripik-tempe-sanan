@@ -45,6 +45,8 @@ class _TokoDetailScreenState extends State<TokoDetailScreen> {
       tokoRepository: dependencies.tokoRepository,
       linkLauncher: dependencies.externalLinkLauncher,
     )..addListener(_onViewModelChanged);
+
+    _viewModel.loadProducts();
   }
 
   void _onViewModelChanged() {

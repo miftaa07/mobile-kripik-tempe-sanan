@@ -12,11 +12,7 @@ class BantuMemilihScreen extends StatefulWidget {
   final BantuMemilihViewModel? viewModel;
   final AppDependencies? dependencies;
 
-  const BantuMemilihScreen({
-    super.key,
-    this.viewModel,
-    this.dependencies,
-  });
+  const BantuMemilihScreen({super.key, this.viewModel, this.dependencies});
 
   @override
   State<BantuMemilihScreen> createState() => _BantuMemilihScreenState();
