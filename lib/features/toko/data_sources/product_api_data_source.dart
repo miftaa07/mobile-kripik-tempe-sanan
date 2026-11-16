@@ -21,7 +21,13 @@ class ProductApiDataSource {
           .timeout(const Duration(seconds: 15));
 
       if (response.statusCode == 200) {
-        final List<dynamic> data = jsonDecode(response.body);
+        final Map<String, dynamic> responseData = jsonDecode(response.body);
+
+        if (responseData['success'] != true) {
+          throw Exception(responseData['message']);
+        }
+
+        final List<dynamic> data = responseData['data'];
 
         return data.map((item) => Product.fromJson(item)).toList();
       }

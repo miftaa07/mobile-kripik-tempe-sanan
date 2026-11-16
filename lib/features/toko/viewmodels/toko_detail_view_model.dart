@@ -19,10 +19,12 @@ class TokoDetailViewModel extends ChangeNotifier {
     required this.storeName,
     required this.address,
     required this.phoneNumber,
-    required this._productRepository,
-    required this._tokoRepository,
-    required this._linkLauncher,
-  });
+    required ProductRepository productRepository,
+    required TokoRepository tokoRepository,
+    required ExternalLinkLauncher linkLauncher,
+  }) : _productRepository = productRepository,
+       _tokoRepository = tokoRepository,
+       _linkLauncher = linkLauncher;
 
   String _activeCategory = 'Semua';
 
@@ -63,11 +65,28 @@ class TokoDetailViewModel extends ChangeNotifier {
     try {
       final result = await _productRepository.getProducts();
 
+      debugPrint('========== DEBUG PRODUK ==========');
+      debugPrint('Nama toko Flutter: "$storeName"');
+      debugPrint('Jumlah produk API: ${result.length}');
+
+      for (final product in result) {
+        debugPrint(
+          'Produk: ${product.name} | '
+          'Toko API: "${product.store}" | '
+          'Store ID: ${product.storeId}',
+        );
+      }
+
       _allProducts = result.where((product) {
-        return product.store.toLowerCase() == storeName.toLowerCase();
+        return product.store.trim().toLowerCase() ==
+            storeName.trim().toLowerCase();
       }).toList();
+
+      debugPrint('Jumlah setelah filter: ${_allProducts.length}');
+      debugPrint('==================================');
     } catch (e) {
       errorMessage = e.toString();
+      debugPrint('ERROR LOAD PRODUK: $e');
     } finally {
       isLoading = false;
       notifyListeners();
