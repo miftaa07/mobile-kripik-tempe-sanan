@@ -20,19 +20,29 @@ class ProductApiDataSource {
           .get(url)
           .timeout(const Duration(seconds: 15));
 
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = jsonDecode(response.body);
-
-        if (responseData['success'] != true) {
-          throw Exception(responseData['message']);
-        }
-
-        final List<dynamic> data = responseData['data'];
-
-        return data.map((item) => Product.fromJson(item)).toList();
+      if (response.statusCode != 200) {
+        throw Exception('Gagal mengambil produk: HTTP ${response.statusCode}');
       }
 
-      throw Exception('Gagal mengambil produk: HTTP ${response.statusCode}');
+      final Map<String, dynamic> responseData = jsonDecode(response.body);
+
+      if (responseData['success'] != true) {
+        throw Exception(responseData['message'] ?? 'Gagal mengambil produk');
+      }
+
+      final List<dynamic> data = responseData['data'];
+
+      return data.map((item) {
+        final Map<String, dynamic> json = Map<String, dynamic>.from(item);
+
+        final String image = json['image']?.toString() ?? '';
+
+        if (image.startsWith('/uploads/')) {
+          json['image'] = '$baseUrl$image';
+        }
+
+        return Product.fromJson(json);
+      }).toList();
     } catch (e) {
       throw Exception('Terjadi kesalahan saat mengambil produk: $e');
     }

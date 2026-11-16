@@ -1,15 +1,19 @@
+import '../data_sources/toko_api_data_source.dart';
 import '../data_sources/toko_local_data_source.dart';
 import '../models/hampers_item.dart';
 import '../models/toko.dart';
 
 class TokoRepository {
-  final TokoLocalDataSource _dataSource;
+  final TokoApiDataSource _apiDataSource;
+  final TokoLocalDataSource _localDataSource;
 
-  const TokoRepository(this._dataSource);
+  TokoRepository(this._apiDataSource, this._localDataSource);
 
-  List<Toko> getTokos() => _dataSource.getTokos();
+  Future<List<Toko>> getTokos() {
+    return _apiDataSource.getTokos();
+  }
 
   List<HampersItem> getHampers(String storeName) {
-    return _dataSource.getHampers(storeName);
+    return _localDataSource.getHampers(storeName);
   }
 }

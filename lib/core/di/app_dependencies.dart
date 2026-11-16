@@ -14,6 +14,7 @@ import '../../features/pengetahuan/repositories/knowledge_repository.dart';
 
 import '../../features/toko/data_sources/product_api_data_source.dart';
 import '../../features/toko/data_sources/product_local_data_source.dart';
+import '../../features/toko/data_sources/toko_api_data_source.dart';
 import '../../features/toko/data_sources/toko_local_data_source.dart';
 import '../../features/toko/repositories/product_repository.dart';
 import '../../features/toko/repositories/toko_repository.dart';
@@ -41,12 +42,18 @@ class AppDependencies {
 
   static AppDependencies _createDefault() {
     final linkLauncher = ExternalLinkLauncher();
+
     final productRepository = ProductRepository(ProductApiDataSource());
+
+    final tokoRepository = TokoRepository(
+      TokoApiDataSource(),
+      const TokoLocalDataSource(),
+    );
 
     return AppDependencies(
       externalLinkLauncher: linkLauncher,
       productRepository: productRepository,
-      tokoRepository: TokoRepository(const TokoLocalDataSource()),
+      tokoRepository: tokoRepository,
       homeRepository: HomeRepository(const HomeLocalDataSource()),
       knowledgeRepository: KnowledgeRepository(
         const KnowledgeLocalDataSource(),

@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../../../core/di/app_dependencies.dart';
 import '../../../core/theme/app_theme.dart';
+import '../data_sources/toko_api_data_source.dart';
 import '../models/toko.dart';
 import '../viewmodels/toko_view_model.dart';
 import 'toko_detail_screen.dart';
@@ -19,18 +20,22 @@ class TokoScreen extends StatefulWidget {
 
 class _TokoScreenState extends State<TokoScreen> {
   final TextEditingController _searchController = TextEditingController();
+
   late final TokoViewModel _viewModel;
   late final bool _ownsViewModel;
 
   @override
   void initState() {
     super.initState();
+
     _ownsViewModel = widget.viewModel == null;
+
     _viewModel =
         widget.viewModel ??
         TokoViewModel(
           (widget.dependencies ?? AppDependencies.instance).tokoRepository,
         );
+
     _viewModel.addListener(_onViewModelChanged);
   }
 
@@ -50,7 +55,11 @@ class _TokoScreenState extends State<TokoScreen> {
   @override
   void dispose() {
     _viewModel.removeListener(_onViewModelChanged);
-    if (_ownsViewModel) _viewModel.dispose();
+
+    if (_ownsViewModel) {
+      _viewModel.dispose();
+    }
+
     _searchController.dispose();
     super.dispose();
   }
@@ -69,29 +78,67 @@ class _TokoScreenState extends State<TokoScreen> {
             _buildSearchField(),
             _buildCategoryFilters(),
             const SizedBox(height: 16),
-            Expanded(
-              child: toko.isEmpty
-                  ? Center(
-                      child: Text(
-                        _viewModel.searchError != null
-                            ? 'Periksa kembali kata pencarian'
-                            : 'Toko tidak ditemukan',
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(color: AppTheme.textGrey),
-                      ),
-                    )
-                  : ListView.separated(
-                      padding: const EdgeInsets.fromLTRB(18, 0, 18, 18),
-                      itemCount: toko.length,
-                      separatorBuilder: (_, _) => const SizedBox(height: 14),
-                      itemBuilder: (context, index) {
-                        return _buildStoreCard(toko[index]);
-                      },
-                    ),
-            ),
+            Expanded(child: _buildStoreContent(toko)),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildStoreContent(List<Toko> toko) {
+    if (_viewModel.isLoading) {
+      return const Center(child: CircularProgressIndicator());
+    }
+
+    if (_viewModel.loadError != null) {
+      return Center(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Icon(Icons.wifi_off, size: 45, color: AppTheme.textGrey),
+              const SizedBox(height: 12),
+              const Text(
+                'Gagal mengambil data toko',
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 8),
+              Text(
+                _viewModel.loadError!,
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 11, color: AppTheme.textGrey),
+              ),
+              const SizedBox(height: 12),
+              ElevatedButton(
+                onPressed: _viewModel.loadTokos,
+                child: const Text('Coba Lagi'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    if (toko.isEmpty) {
+      return Center(
+        child: Text(
+          _viewModel.searchError != null
+              ? 'Periksa kembali kata pencarian'
+              : 'Toko tidak ditemukan',
+          textAlign: TextAlign.center,
+          style: const TextStyle(color: AppTheme.textGrey),
+        ),
+      );
+    }
+
+    return ListView.separated(
+      padding: const EdgeInsets.fromLTRB(18, 0, 18, 18),
+      itemCount: toko.length,
+      separatorBuilder: (_, _) => const SizedBox(height: 14),
+      itemBuilder: (context, index) {
+        return _buildStoreCard(toko[index]);
+      },
     );
   }
 
@@ -225,12 +272,16 @@ class _TokoScreenState extends State<TokoScreen> {
             gambar: toko.gambar,
             alamat: toko.alamat,
             jamBuka: toko.jamBuka,
-            deskripsi: 'Salah satu pelopor olahan keripik tempe renyah tanpa bahan pengawet di Sanan. Menggunakan kedelai pilihan dengan teknik peragian tradisional dan bumbu rempah alami khas Malang.',
+            deskripsi: toko.deskripsi ?? 'Informasi toko belum tersedia.',
             dependencies: widget.dependencies,
           ),
         ),
       );
     }
+
+    final imageUrl = toko.gambar.startsWith('http')
+        ? toko.gambar
+        : '${TokoApiDataSource.baseUrl}${toko.gambar}';
 
     return InkWell(
       onTap: bukaDetail,
@@ -261,8 +312,8 @@ class _TokoScreenState extends State<TokoScreen> {
                 child: Stack(
                   fit: StackFit.expand,
                   children: [
-                    Image.asset(
-                      toko.gambar,
+                    Image.network(
+                      imageUrl,
                       fit: BoxFit.cover,
                       errorBuilder: (_, _, _) {
                         return Container(

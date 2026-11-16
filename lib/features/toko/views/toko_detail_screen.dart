@@ -36,7 +36,9 @@ class _TokoDetailScreenState extends State<TokoDetailScreen> {
   @override
   void initState() {
     super.initState();
+
     final dependencies = widget.dependencies ?? AppDependencies.instance;
+
     _viewModel = TokoDetailViewModel(
       storeName: widget.nama,
       address: widget.alamat,
@@ -53,8 +55,52 @@ class _TokoDetailScreenState extends State<TokoDetailScreen> {
     if (mounted) setState(() {});
   }
 
+  String _imageUrl(String image) {
+    if (image.isEmpty) return '';
+
+    if (image.startsWith('http://') || image.startsWith('https://')) {
+      return image;
+    }
+
+    return 'http://10.0.2.2:5000${image.startsWith('/') ? image : '/$image'}';
+  }
+
+  Widget _networkImage(
+    String image, {
+    double? height,
+    BoxFit fit = BoxFit.cover,
+  }) {
+    final url = _imageUrl(image);
+
+    if (url.isEmpty) {
+      return _imagePlaceholder(height: height);
+    }
+
+    return Image.network(
+      url,
+      height: height,
+      width: double.infinity,
+      fit: fit,
+      errorBuilder: (_, _, _) => _imagePlaceholder(height: height),
+      loadingBuilder: (context, child, progress) {
+        if (progress == null) return child;
+
+        return Container(
+          height: height,
+          color: const Color(0xFFF3EEE9),
+          alignment: Alignment.center,
+          child: const CircularProgressIndicator(
+            color: AppTheme.primary,
+            strokeWidth: 2,
+          ),
+        );
+      },
+    );
+  }
+
   Future<void> _hubungiToko() async {
     final berhasil = await _viewModel.contactStore();
+
     if (!berhasil && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Tidak dapat membuka aplikasi terkait.')),
@@ -64,6 +110,7 @@ class _TokoDetailScreenState extends State<TokoDetailScreen> {
 
   Future<void> _bukaPeta() async {
     final berhasil = await _viewModel.openMap();
+
     if (!berhasil && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Tidak dapat membuka aplikasi terkait.')),
@@ -83,35 +130,7 @@ class _TokoDetailScreenState extends State<TokoDetailScreen> {
             SliverToBoxAdapter(child: _buildLocation()),
             SliverToBoxAdapter(child: _buildCatalogHeader()),
             SliverToBoxAdapter(child: _buildCategoryFilters()),
-            SliverPadding(
-              padding: const EdgeInsets.fromLTRB(19, 8, 19, 20),
-              sliver: _viewModel.products.isEmpty
-                  ? const SliverToBoxAdapter(
-                      child: Padding(
-                        padding: EdgeInsets.symmetric(vertical: 24),
-                        child: Center(
-                          child: Text(
-                            'Belum ada produk pada kategori ini.',
-                            style: TextStyle(color: AppTheme.textGrey),
-                          ),
-                        ),
-                      ),
-                    )
-                  : SliverGrid(
-                      delegate: SliverChildBuilderDelegate(
-                        (context, index) =>
-                            _buildProductCard(_viewModel.products[index]),
-                        childCount: _viewModel.products.length,
-                      ),
-                      gridDelegate:
-                          const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            crossAxisSpacing: 14,
-                            mainAxisSpacing: 16,
-                            childAspectRatio: 0.73,
-                          ),
-                    ),
-            ),
+            _buildProductContent(),
             if (_viewModel.hampers.isNotEmpty) ...[
               SliverToBoxAdapter(child: _buildHampersHeader()),
               SliverToBoxAdapter(child: _buildHampersList()),
@@ -120,6 +139,80 @@ class _TokoDetailScreenState extends State<TokoDetailScreen> {
         ),
       ),
       bottomNavigationBar: _buildContactButton(),
+    );
+  }
+
+  Widget _buildProductContent() {
+    if (_viewModel.isLoading) {
+      return const SliverToBoxAdapter(
+        child: Padding(
+          padding: EdgeInsets.all(35),
+          child: Center(
+            child: CircularProgressIndicator(color: AppTheme.primary),
+          ),
+        ),
+      );
+    }
+
+    if (_viewModel.errorMessage != null) {
+      return SliverToBoxAdapter(
+        child: Padding(
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            children: [
+              const Icon(Icons.wifi_off, size: 40, color: AppTheme.textGrey),
+              const SizedBox(height: 10),
+              Text(
+                'Gagal mengambil produk toko.',
+                style: const TextStyle(
+                  color: AppTheme.textDark,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                _viewModel.errorMessage!,
+                textAlign: TextAlign.center,
+                style: const TextStyle(color: AppTheme.textGrey, fontSize: 11),
+              ),
+              const SizedBox(height: 12),
+              ElevatedButton(
+                onPressed: _viewModel.loadProducts,
+                child: const Text('Coba Lagi'),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    if (_viewModel.products.isEmpty) {
+      return const SliverToBoxAdapter(
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 24),
+          child: Center(
+            child: Text(
+              'Belum ada produk pada kategori ini.',
+              style: TextStyle(color: AppTheme.textGrey),
+            ),
+          ),
+        ),
+      );
+    }
+
+    return SliverPadding(
+      padding: const EdgeInsets.fromLTRB(19, 8, 19, 20),
+      sliver: SliverGrid(
+        delegate: SliverChildBuilderDelegate((context, index) {
+          return _buildProductCard(_viewModel.products[index]);
+        }, childCount: _viewModel.products.length),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 14,
+          mainAxisSpacing: 16,
+          childAspectRatio: 0.73,
+        ),
+      ),
     );
   }
 
@@ -132,7 +225,6 @@ class _TokoDetailScreenState extends State<TokoDetailScreen> {
             onPressed: () => Navigator.of(context).maybePop(),
             icon: const Icon(Icons.arrow_back),
             color: AppTheme.primary,
-            tooltip: 'Kembali',
           ),
           const SizedBox(width: 4),
           const Text(
@@ -158,11 +250,7 @@ class _TokoDetailScreenState extends State<TokoDetailScreen> {
             borderRadius: BorderRadius.circular(17),
             child: AspectRatio(
               aspectRatio: 1.18,
-              child: Image.asset(
-                widget.gambar,
-                fit: BoxFit.cover,
-                errorBuilder: (_, _, _) => _imagePlaceholder(),
-              ),
+              child: _networkImage(widget.gambar),
             ),
           ),
           const SizedBox(height: 17),
@@ -226,7 +314,7 @@ class _TokoDetailScreenState extends State<TokoDetailScreen> {
             _informationRow(
               icon: Icons.access_time,
               title: 'JAM BUKA',
-              content: 'Senin – Minggu: ${widget.jamBuka}',
+              content: 'Senin - Minggu: ${widget.jamBuka}',
               subtitle: 'Buka Hari Ini',
               iconBackground: const Color(0xFFD7E9C9),
             ),
@@ -408,6 +496,7 @@ class _TokoDetailScreenState extends State<TokoDetailScreen> {
 
   Widget _buildCategoryFilters() {
     final categories = _viewModel.categories;
+
     return SizedBox(
       height: 55,
       child: ListView.separated(
@@ -418,6 +507,7 @@ class _TokoDetailScreenState extends State<TokoDetailScreen> {
         itemBuilder: (context, index) {
           final category = categories[index];
           final selected = category == _viewModel.activeCategory;
+
           return ChoiceChip(
             label: Text(category),
             selected: selected,
@@ -457,11 +547,7 @@ class _TokoDetailScreenState extends State<TokoDetailScreen> {
             flex: 5,
             child: SizedBox(
               width: double.infinity,
-              child: Image.asset(
-                product.image,
-                fit: BoxFit.cover,
-                errorBuilder: (_, _, _) => _imagePlaceholder(),
-              ),
+              child: _networkImage(product.image),
             ),
           ),
           Expanded(
@@ -609,6 +695,7 @@ class _TokoDetailScreenState extends State<TokoDetailScreen> {
   Widget _imagePlaceholder({double? height}) {
     return Container(
       height: height,
+      width: double.infinity,
       color: const Color(0xFFF3EEE9),
       alignment: Alignment.center,
       child: const Icon(
@@ -624,6 +711,7 @@ class _TokoDetailScreenState extends State<TokoDetailScreen> {
     _viewModel
       ..removeListener(_onViewModelChanged)
       ..dispose();
+
     super.dispose();
   }
 }

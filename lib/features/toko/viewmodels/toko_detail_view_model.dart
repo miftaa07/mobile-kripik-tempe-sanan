@@ -19,12 +19,10 @@ class TokoDetailViewModel extends ChangeNotifier {
     required this.storeName,
     required this.address,
     required this.phoneNumber,
-    required ProductRepository productRepository,
-    required TokoRepository tokoRepository,
-    required ExternalLinkLauncher linkLauncher,
-  }) : _productRepository = productRepository,
-       _tokoRepository = tokoRepository,
-       _linkLauncher = linkLauncher;
+    required this._productRepository,
+    required this._tokoRepository,
+    required this._linkLauncher,
+  });
 
   String _activeCategory = 'Semua';
 
