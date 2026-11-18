@@ -4,13 +4,10 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 
-import 'package:kampung_keripik_tempe/features/bantu_memilih/data_sources/recommendation_local_data_source.dart';
 import 'package:kampung_keripik_tempe/features/bantu_memilih/models/product_preferences.dart';
 import 'package:kampung_keripik_tempe/features/bantu_memilih/repositories/recommendation_repository.dart';
-import 'package:kampung_keripik_tempe/features/home/data_sources/home_local_data_source.dart';
 import 'package:kampung_keripik_tempe/features/home/repositories/home_repository.dart';
 import 'package:kampung_keripik_tempe/features/home/viewmodels/home_view_model.dart';
-import 'package:kampung_keripik_tempe/features/lokasi/data_sources/location_local_data_source.dart';
 import 'package:kampung_keripik_tempe/features/lokasi/repositories/location_repository.dart';
 import 'package:kampung_keripik_tempe/features/pengetahuan/data_sources/knowledge_local_data_source.dart';
 import 'package:kampung_keripik_tempe/features/pengetahuan/repositories/knowledge_repository.dart';
@@ -22,9 +19,7 @@ import 'package:kampung_keripik_tempe/features/toko/viewmodels/toko_view_model.d
 
 void main() {
   test('home view model searches the local repository', () {
-    final viewModel = HomeViewModel(
-      HomeRepository(const HomeLocalDataSource()),
-    );
+    final viewModel = HomeViewModel(const HomeRepository());
 
     viewModel.submitSearch('bbq');
 
@@ -98,8 +93,7 @@ void main() {
     final knowledge = KnowledgeRepository(const KnowledgeLocalDataSource())
         .getArticles();
 
-    final guide = LocationRepository(const LocationLocalDataSource())
-        .getGuide();
+    final guide = const LocationRepository().getGuide();
 
     expect(knowledge, hasLength(4));
     expect(guide.transportOptions, hasLength(3));
@@ -107,9 +101,7 @@ void main() {
   });
 
   test('recommendation repository returns ranked matching products', () {
-    final repository = RecommendationRepository(
-      RecommendationLocalDataSource(const ProductLocalDataSource()),
-    );
+    final repository = RecommendationRepository(const ProductLocalDataSource());
 
     final recommendations = repository.getRecommendations(
       const ProductPreferences(

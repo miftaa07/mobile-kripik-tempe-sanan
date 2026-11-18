@@ -1,14 +1,8 @@
 import '../utils/external_link_launcher.dart';
 
-import '../../features/bantu_memilih/data_sources/recommendation_local_data_source.dart';
 import '../../features/bantu_memilih/repositories/recommendation_repository.dart';
-
-import '../../features/home/data_sources/home_local_data_source.dart';
 import '../../features/home/repositories/home_repository.dart';
-
-import '../../features/lokasi/data_sources/location_local_data_source.dart';
 import '../../features/lokasi/repositories/location_repository.dart';
-
 import '../../features/pengetahuan/data_sources/knowledge_local_data_source.dart';
 import '../../features/pengetahuan/repositories/knowledge_repository.dart';
 
@@ -54,13 +48,13 @@ class AppDependencies {
       externalLinkLauncher: linkLauncher,
       productRepository: productRepository,
       tokoRepository: tokoRepository,
-      homeRepository: HomeRepository(const HomeLocalDataSource()),
+      homeRepository: const HomeRepository(),
       knowledgeRepository: KnowledgeRepository(
         const KnowledgeLocalDataSource(),
       ),
-      locationRepository: LocationRepository(const LocationLocalDataSource()),
+      locationRepository: const LocationRepository(),
       recommendationRepository: RecommendationRepository(
-        RecommendationLocalDataSource(const ProductLocalDataSource()),
+        const ProductLocalDataSource(),
       ),
     );
   }
