@@ -7,30 +7,34 @@ import '../repositories/product_repository.dart';
 import '../repositories/toko_repository.dart';
 
 class TokoDetailViewModel extends ChangeNotifier {
+  final int? storeId;
   final String storeName;
   final String address;
   final String phoneNumber;
 
-  final ProductRepository _productRepository;
-  final TokoRepository _tokoRepository;
-  final ExternalLinkLauncher _linkLauncher;
+  final ProductRepository productRepository;
+  final TokoRepository tokoRepository;
+  final ExternalLinkLauncher linkLauncher;
 
   TokoDetailViewModel({
+    this.storeId,
     required this.storeName,
     required this.address,
     required this.phoneNumber,
-    required this._productRepository,
-    required this._tokoRepository,
-    required this._linkLauncher,
+    required this.productRepository,
+    required this.tokoRepository,
+    required this.linkLauncher,
   });
 
   String _activeCategory = 'Semua';
-
   List<Product> _allProducts = [];
-  bool isLoading = false;
-  String? errorMessage;
+  bool _isLoading = false;
+  bool _disposed = false;
+  String? _errorMessage;
 
   String get activeCategory => _activeCategory;
+  bool get isLoading => _isLoading;
+  String? get errorMessage => _errorMessage;
 
   List<String> get categories {
     return [
@@ -53,41 +57,36 @@ class TokoDetailViewModel extends ChangeNotifier {
         .toList();
   }
 
-  List<HampersItem> get hampers => _tokoRepository.getHampers(storeName);
+  List<HampersItem> get hampers => tokoRepository.getHampers(storeName);
 
   Future<void> loadProducts() async {
-    isLoading = true;
-    errorMessage = null;
+    if (_disposed) return;
+
+    _isLoading = true;
+    _errorMessage = null;
     notifyListeners();
 
     try {
-      final result = await _productRepository.getProducts();
+      final result = await productRepository.getProducts();
 
-      debugPrint('========== DEBUG PRODUK ==========');
-      debugPrint('Nama toko Flutter: "$storeName"');
-      debugPrint('Jumlah produk API: ${result.length}');
-
-      for (final product in result) {
-        debugPrint(
-          'Produk: ${product.name} | '
-          'Toko API: "${product.store}" | '
-          'Store ID: ${product.storeId}',
-        );
-      }
+      if (_disposed) return;
 
       _allProducts = result.where((product) {
+        if (storeId != null && storeId! > 0) {
+          return product.storeId == storeId;
+        }
+
         return product.store.trim().toLowerCase() ==
             storeName.trim().toLowerCase();
       }).toList();
-
-      debugPrint('Jumlah setelah filter: ${_allProducts.length}');
-      debugPrint('==================================');
     } catch (e) {
-      errorMessage = e.toString();
-      debugPrint('ERROR LOAD PRODUK: $e');
+      if (_disposed) return;
+      _errorMessage = e.toString();
     } finally {
-      isLoading = false;
-      notifyListeners();
+      if (!_disposed) {
+        _isLoading = false;
+        notifyListeners();
+      }
     }
   }
 
@@ -106,14 +105,20 @@ class TokoDetailViewModel extends ChangeNotifier {
       'Halo, saya ingin bertanya tentang produk $storeName.',
     );
 
-    return _linkLauncher.open(Uri.parse('https://wa.me/$number?text=$message'));
+    return linkLauncher.open(Uri.parse('https://wa.me/$number?text=$message'));
   }
 
   Future<bool> openMap() {
     final query = Uri.encodeComponent(address);
 
-    return _linkLauncher.open(
+    return linkLauncher.open(
       Uri.parse('https://www.google.com/maps/search/?api=1&query=$query'),
     );
+  }
+
+  @override
+  void dispose() {
+    _disposed = true;
+    super.dispose();
   }
 }

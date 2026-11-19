@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:kampung_keripik_tempe/features/pengetahuan/data_sources/knowledge_local_data_source.dart';
+import 'package:kampung_keripik_tempe/features/pengetahuan/repositories/knowledge_repository.dart';
 import 'package:kampung_keripik_tempe/features/pengetahuan/views/pengetahuan_screen.dart';
 import 'package:kampung_keripik_tempe/features/navigation/widgets/bottom_navbar.dart';
 
@@ -23,7 +23,7 @@ void main() {
     );
 
     final scrollable = find.byType(Scrollable).first;
-    for (final article in knowledgeArticles) {
+    for (final article in const KnowledgeRepository().getArticles()) {
       final card = find.text(article.title).first;
       await tester.scrollUntilVisible(card, 250, scrollable: scrollable);
       await tester.tap(card);

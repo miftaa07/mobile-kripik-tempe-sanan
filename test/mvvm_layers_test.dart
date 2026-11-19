@@ -9,11 +9,8 @@ import 'package:kampung_keripik_tempe/features/bantu_memilih/repositories/recomm
 import 'package:kampung_keripik_tempe/features/home/repositories/home_repository.dart';
 import 'package:kampung_keripik_tempe/features/home/viewmodels/home_view_model.dart';
 import 'package:kampung_keripik_tempe/features/lokasi/repositories/location_repository.dart';
-import 'package:kampung_keripik_tempe/features/pengetahuan/data_sources/knowledge_local_data_source.dart';
 import 'package:kampung_keripik_tempe/features/pengetahuan/repositories/knowledge_repository.dart';
 import 'package:kampung_keripik_tempe/features/toko/data_sources/product_local_data_source.dart';
-import 'package:kampung_keripik_tempe/features/toko/data_sources/toko_api_data_source.dart';
-import 'package:kampung_keripik_tempe/features/toko/data_sources/toko_local_data_source.dart';
 import 'package:kampung_keripik_tempe/features/toko/repositories/toko_repository.dart';
 import 'package:kampung_keripik_tempe/features/toko/viewmodels/toko_view_model.dart';
 
@@ -59,12 +56,7 @@ void main() {
       );
     });
 
-    final viewModel = TokoViewModel(
-      TokoRepository(
-        TokoApiDataSource(client: mockClient),
-        const TokoLocalDataSource(),
-      ),
-    );
+    final viewModel = TokoViewModel(TokoRepository(client: mockClient));
 
     // Tunggu loading API mock selesai.
     while (viewModel.isLoading) {
@@ -90,8 +82,7 @@ void main() {
   });
 
   test('repositories expose the existing knowledge and location fixtures', () {
-    final knowledge = KnowledgeRepository(const KnowledgeLocalDataSource())
-        .getArticles();
+    final knowledge = const KnowledgeRepository().getArticles();
 
     final guide = const LocationRepository().getGuide();
 

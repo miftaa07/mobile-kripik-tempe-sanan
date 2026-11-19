@@ -3,7 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../../../core/di/app_dependencies.dart';
 import '../../../core/theme/app_theme.dart';
-import '../data_sources/toko_api_data_source.dart';
+import '../repositories/toko_repository.dart';
 import '../models/toko.dart';
 import '../viewmodels/toko_view_model.dart';
 import 'toko_detail_screen.dart';
@@ -281,7 +281,7 @@ class _TokoScreenState extends State<TokoScreen> {
 
     final imageUrl = toko.gambar.startsWith('http')
         ? toko.gambar
-        : '${TokoApiDataSource.baseUrl}${toko.gambar}';
+        : '${TokoRepository.baseUrl}${toko.gambar}';
 
     return InkWell(
       onTap: bukaDetail,

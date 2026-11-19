@@ -6,7 +6,6 @@ import 'package:http/http.dart' as http;
 import 'package:http/testing.dart';
 
 import 'package:kampung_keripik_tempe/core/di/app_dependencies.dart';
-import 'package:kampung_keripik_tempe/features/toko/data_sources/product_api_data_source.dart';
 import 'package:kampung_keripik_tempe/features/toko/repositories/product_repository.dart';
 import 'package:kampung_keripik_tempe/features/toko/views/toko_detail_screen.dart';
 
@@ -26,9 +25,7 @@ void main() {
 
     final dependencies = AppDependencies(
       externalLinkLauncher: AppDependencies.instance.externalLinkLauncher,
-      productRepository: ProductRepository(
-        ProductApiDataSource(client: mockClient),
-      ),
+      productRepository: ProductRepository(client: mockClient),
       tokoRepository: AppDependencies.instance.tokoRepository,
       homeRepository: AppDependencies.instance.homeRepository,
       knowledgeRepository: AppDependencies.instance.knowledgeRepository,
